@@ -3,32 +3,28 @@ function calculateTreeHeights() {
 	
 	for (tree = 0; tree < inputs.cases; tree++) {
 		var treeHeight = 1;
-		var numCycles = parseInt(inputs.cycles[tree]);
-		if (numCycles !== 0) {
-			for (cycle = 1; cycle <= numCycles; cycle++) {
-				if (cycle % 2 === 1) {
-					treeHeight *= 2;
-				} else {
-					treeHeight += 1;
-				}
+		for (cycle = 1; cycle <= inputs.cycles[tree]; cycle++) {
+			if (cycle % 2 === 1) {
+				treeHeight *= 2;
+			} else {
+				treeHeight += 1;
 			}
 		}
-		printResult(numCycles, treeHeight);
+		printResult(inputs.cycles[tree], treeHeight);
 	}	
 }
 
 function parseUserInput() {
 	//console.log('Reading user input from text area');
-	var input = document.getElementById('userInput').value;
-	input = input.replace(/\s/g, " ");	
-	var numCases = parseInt(input.substr(0, input.indexOf(" ") + 1).trim());
-	var numCycles = input.substr(input.indexOf(" ") + 1).split(" "); 
+	var input = document.getElementById('userInput').value.split(/\s+/);
+	var numCases = parseInt(input.shift(), 10);
+	var cycles = input.map(function(e) { return parseInt(e, 10); });
 	
 	//console.log('input: ' + input);
 	//console.log('cases: ' + numCases);
-	//console.log(numCycles);
+	//console.log('cycles: ' + cycles);
 	
-	return {cases: numCases, cycles: numCycles};
+	return {cases: numCases, cycles: cycles};
 }
 
 function printResult(cycles, height) {
