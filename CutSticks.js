@@ -120,9 +120,20 @@ function cut(sortedSticks) {
 	return numCuts;
 }
 
-function printResult(numCuts) {
+function printResult(numCuts) {	
 	var node = document.createElement('LI');
-	var textnode = document.createTextNode(numCuts + " sticks were cut.");
+	if (numCuts === 1) {
+		var textnode = document.createTextNode(numCuts + " stick was cut.");
+	} else {
+		var textnode = document.createTextNode(numCuts + " sticks were cut.");
+	}
 	node.appendChild(textnode);
 	document.getElementById('results').appendChild(node);
+}
+
+function clearOldResults() {
+	var resultArea = document.getElementById('results');
+	while (resultArea.hasChildNodes()) {
+		resultArea.removeChild(resultArea.firstChild);
+	}
 }
