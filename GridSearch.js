@@ -11,14 +11,16 @@ function gridSearch() {
 		var gridRows = inputs[T].gridRows;
 		var grid = inputs[T].grid;
 		var patternRows = inputs[T].patternRows;
+		var patternCols = inputs[T].patternCols;
 		var pattern = inputs[T].pattern;
 
 		var hasPattern = false;
 		for (R = 0; R <= gridRows - patternRows; R++) {
-			if (grid[R].includes(pattern[0])) {
+			var colIndex = grid[R].indexOf(pattern[0]);
+			if (colIndex !== -1) {
 				hasPattern = true;
 				for (r = 1; r < patternRows; r++) {
-					if (!grid[R+r].includes(pattern[r])) {
+					if (grid[R+r].substr(colIndex, patternCols) !== pattern[r]) {
 						hasPattern = false;
 						break;
 					}
