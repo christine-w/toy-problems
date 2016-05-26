@@ -1,34 +1,72 @@
+/*----------------------------------------------------------
+A solution to the "Cut the Sticks" exercise found on Hacker
+Rank (https://www.hackerrank.com/challenges/cut-the-sticks).
+
+This version uses a sorted linked list.
+----------------------------------------------------------*/
+
 function cutSticks() {
 	var inputs = parseUserInput();
 	
+	
+	// add stick lengths to a sorted list
 	var sortedSticks = new MinSortedList();
-	for (stick = 0; stick < parseInt(inputs.numSticks); stick++) {
-		var stickLength = parseInt(inputs.lengths[stick]);
-		sortedSticks.insert(stickLength);
+	for (stick = 0; stick < inputs.numSticks; stick++) {
+		sortedSticks.add(inputs.lengths[stick]);
 	}
 	
-	//sortedSticks.printList();
+	sortedSticks.printList();
 	
+	// cut all remaining sticks by the shortest stick length until there are no more sticks
 	while (sortedSticks.top() != null) {
-		//console.log(sortedSticks.top());
 		var numCuts = cut(sortedSticks);
 		printResult(numCuts);
 	}
 }
 
+// Parses user input coming from a textarea form control with id 'userInput'
 function parseUserInput() {
-	//console.log('Reading user input from text area');
-	var input = document.getElementById('userInput').value;
-	input = input.replace(/\s/g, " ");	
-	var numSticks = parseInt(input.substr(0, input.indexOf(" ") + 1).trim());
-	var stickLengths = input.substr(input.indexOf(" ") + 1).split(" "); 
-	
-	//console.log('input: ' + input);
-	//console.log('cases: ' + numSticks);
-	//console.log(stickLengths);
+	var input = document.getElementById('userInput').value.split(/\s+/);
+	var numSticks = parseInt(input.shift(), 10);	
+	var stickLengths = input.map(function(e) {return parseInt(e, 10);}); 
 	
 	return {numSticks: numSticks, lengths: stickLengths};
 }
+
+// cut all sticks in the "sortedSticks" list by the shortest stick length
+function cut(sortedSticks) {
+	var cutLength = sortedSticks.pop();
+	if (cutLength === 0) {
+		return 0;
+	}
+	var numCuts = 1;
+	
+	var currentItem = sortedSticks.head;
+	while (currentItem !== null) {
+		if (currentItem.value === cutLength) {
+			sortedSticks.pop();
+		} else {
+			currentItem.value -= cutLength;
+		}
+		currentItem = currentItem.next;
+		numCuts += 1;
+	} 
+	return numCuts;
+}
+
+// Displays result by adding to a list item to the div with id 'results'
+function printResult(numCuts) {	
+	var node = document.createElement('LI');
+	if (numCuts === 1) {
+		var textnode = document.createTextNode(numCuts + " stick was cut.");
+	} else {
+		var textnode = document.createTextNode(numCuts + " sticks were cut.");
+	}
+	node.appendChild(textnode);
+	document.getElementById('results').appendChild(node);
+}
+
+//--- begin Sorted linked list implementation ---//
 
 function ListItem(value) {
 	this.value = value;
@@ -38,32 +76,27 @@ function ListItem(value) {
 function MinSortedList() {
 	this.head = null;
 	
-	this.insert = function(value) {
+	this.add = function(value) {
 		var newListItem = new ListItem(value);
 		
 		if (this.head === null) {
-			//console.log("start list");
 			this.head = newListItem;
 		} else {
-			var previousItem = null;
 			var currentItem = this.head;
-			while (currentItem !== null) {
-				if (newListItem.value <= currentItem.value) {
-					//console.log("smaller or equal, add to beginning");
-					newListItem.next = currentItem;
-					if (previousItem === null) {
-						this.head = newListItem;
-					} else {
-						previousItem.next = newListItem;
+			if (newListItem.value <= currentItem.value) {
+				newListItem.next = this.head;
+				this.head = newListItem;
+			} else {
+				while (currentItem.next !== null) {
+					if (newListItem.value <= currentItem.next.value) {
+						newListItem.next = currentItem.next;
+						currentItem.next = newListItem;
+						return;
 					}
-					return;
+					currentItem = currentItem.next;
 				}
-				//console.log("larger, keep looking");
-				previousItem = currentItem;
-				currentItem = currentItem.next;
-			} 
-			//console.log("add to end");
-			previousItem.next = newListItem;
+				currentItem.next = newListItem;
+			}
 		}
 	};
 	
@@ -79,9 +112,9 @@ function MinSortedList() {
 		if (this.head === null) {
 			return 0;
 		} else {
-			var topItem = this.head;
-			this.head = topItem.next;
-			return topItem.value;
+			var topItemValue = this.head.value;
+			this.head = this.head.next;
+			return topItemValue;
 		}
 	};
 	
@@ -96,41 +129,9 @@ function MinSortedList() {
 		}
 	};
 }
+//--- end Sorted linked list implementation ---//
 
-function cut(sortedSticks) {
-	//console.log(sortedSticks.top());
-	
-	var cutLength = sortedSticks.pop();
-	if (cutLength === 0) {
-		return 0;
-	}
-	var numCuts = 1;
-	
-	var currentItem = sortedSticks.head;
-	while (currentItem !== null) {
-		if (currentItem.value === cutLength) {
-			currentItem = currentItem.next;
-			sortedSticks.pop();
-		} else {
-			currentItem.value -= cutLength;
-			currentItem = currentItem.next;
-		}
-		numCuts += 1;
-	} 
-	return numCuts;
-}
-
-function printResult(numCuts) {	
-	var node = document.createElement('LI');
-	if (numCuts === 1) {
-		var textnode = document.createTextNode(numCuts + " stick was cut.");
-	} else {
-		var textnode = document.createTextNode(numCuts + " sticks were cut.");
-	}
-	node.appendChild(textnode);
-	document.getElementById('results').appendChild(node);
-}
-
+// Intended to support clearing old results on the page before printing new ones
 function clearOldResults() {
 	var resultArea = document.getElementById('results');
 	while (resultArea.hasChildNodes()) {
