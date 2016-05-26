@@ -15,7 +15,7 @@ function cutSticks() {
 		sortedSticks.add(inputs.lengths[stick]);
 	}
 	
-	sortedSticks.printList();
+	// sortedSticks.printList();
 	
 	// cut all remaining sticks by the shortest stick length until there are no more sticks
 	while (sortedSticks.top() != null) {
