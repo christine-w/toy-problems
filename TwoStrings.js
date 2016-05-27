@@ -16,18 +16,15 @@ function commonSubstringExists(string1, string2) {
         return "YES";
     }
     
-    var A = string1.length <= string2.length ? string1 : string2;
-    var B = string1.length <= string2.length ? string2 : string1;
+    var pattern = "[^" + string1 + "]";  
+    var re = new RegExp(pattern, "g");
     
-    for (testLength = 1; testLength < A.length; testLength++) {
-        var numPossibleTests = A.length - testLength + 1;
-        for (test = 0; test < numPossibleTests; test++) {
-            if (B.includes(A.substr(test, testLength))) {
-                return "YES";
-            }
-        }
+    var commonCharacters = string2.replace(re, " ").trim();
+    if (commonCharacters == "") {
+        return "NO";
+    } else {
+        return "YES";
     }
-    return "NO";
 }
 
 process.stdin.resume();
