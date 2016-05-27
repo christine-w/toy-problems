@@ -1,3 +1,8 @@
+/*-------------------------------------------------------------
+A solution to the "Two Strings" exercise found on Hacker Rank
+(https://www.hackerrank.com/challenges/two-strings). 
+--------------------------------------------------------------*/
+
 function processData(input) {
     var inputStrings = input.split(/\n/);
     var T = parseInt(inputStrings.shift(), 10);
