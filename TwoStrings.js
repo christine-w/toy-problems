@@ -18,7 +18,7 @@ function commonSubstringExists(string1, string2) {
     var pattern = "[^" + string1 + "]";  
     var re = new RegExp(pattern, "g");
     
-    if (string2.replace(re, " ").trim() == "") {
+    if (string2.replace(re, " ").trim() === "") {
         return "NO";
     } else {
         return "YES";
