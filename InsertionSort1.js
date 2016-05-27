@@ -1,25 +1,38 @@
+/*----------------------------------------------------------------
+A solution to the "Insertion Sort 1" exercise found on Hacker Rank
+(https://www.hackerrank.com/challenges/insertionsort1). 
+----------------------------------------------------------------*/
+
 function processData(input) {
-    var array = input.split(/\s+/); 
-    var size = parseInt(array.shift(), 10); 
-    array = array.map(function(e) { return parseInt(e, 10); });
+    var inputArray = input.split(/\s+/); 
+    var size = parseInt(inputArray.shift(), 10); 
+    var array = inputArray.map(function(e) { return parseInt(e, 10); });
    
-    var unsortedValue = array[size - 1];
-    var isSorted = false;
-    for (i = size - 2; i > -1; i--) {
+    insertionSort(array);
+} 
+
+function insertionSort(arr) {
+    var array = arr;
+    
+    var unsortedValue = array[array.length - 1];
+    for (i = array.length - 2; i >= 0; i--) {
         if (unsortedValue < array[i]) {
             array[i+1] = array[i];
+            printStep(array);
         } else {
             array[i+1] = unsortedValue;
-            isSorted = true;
+            printStep(array);
+            break;
         }
-        process.stdout.write(array.toString().replace(/,/g, " ") + "\n");
-        if (isSorted) break;
     }
-    //if we reach this point and the array is still not sorted, unsortedValue has not been written back into the array because it is less than all elements in the array
-    if (!isSorted) {
+    if (unsortedValue < array[0]) {
         array[0] = unsortedValue;
-        process.stdout.write(array.toString().replace(/,/g, " ") + "\n");
+        printStep(array);
     }
+}
+
+function printStep(arr) {
+    process.stdout.write(arr.toString().replace(/,/g, " ") + "\n");
 } 
 
 process.stdin.resume();
