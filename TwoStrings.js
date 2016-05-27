@@ -1,5 +1,4 @@
 function processData(input) {
-    //Enter your code here
     var inputStrings = input.split(/\n/);
     var T = parseInt(inputStrings.shift(), 10);
     
@@ -19,8 +18,7 @@ function commonSubstringExists(string1, string2) {
     var pattern = "[^" + string1 + "]";  
     var re = new RegExp(pattern, "g");
     
-    var commonCharacters = string2.replace(re, " ").trim();
-    if (commonCharacters == "") {
+    if (string2.replace(re, " ").trim() == "") {
         return "NO";
     } else {
         return "YES";
