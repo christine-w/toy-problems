@@ -3,78 +3,76 @@ A solution to the "Grid Search" exercise found on Hacker
 Rank (https://www.hackerrank.com/challenges/the-grid-search).
 ----------------------------------------------------------*/
 
-function gridSearch() {
-	var inputs = parseUserInput();
-	//console.log(inputs);
-	
-	for (T = 0; T < inputs.length; T++) {
-		var gridRows = inputs[T].gridRows;
-		var grid = inputs[T].grid;
-		var patternRows = inputs[T].patternRows;
-		var patternCols = inputs[T].patternCols;
-		var pattern = inputs[T].pattern;
+process.stdin.resume();
+process.stdin.setEncoding('ascii');
 
-		var hasPattern = false;
-		for (R = 0; R <= gridRows - patternRows; R++) {
-			var colIndex = grid[R].indexOf(pattern[0]);
-			if (colIndex !== -1) {
+var input_stdin = "";
+var input_stdin_array = "";
+var input_currentline = 0;
+
+process.stdin.on('data', function (data) {
+    input_stdin += data;
+});
+
+process.stdin.on('end', function () {
+    input_stdin_array = input_stdin.split("\n");
+    main();    
+});
+
+function readLine() {
+    return input_stdin_array[input_currentline++];
+}
+
+/////////////// ignore above this line ////////////////////
+
+function main() {
+    var t = parseInt(readLine());
+    for(var a0 = 0; a0 < t; a0++){
+        var R_temp = readLine().split(' ');
+        var R = parseInt(R_temp[0]);
+        var C = parseInt(R_temp[1]);
+        var G = [];
+        for(var G_i = 0; G_i < R; G_i++){
+           G[G_i] = readLine();
+        }
+        var r_temp = readLine().split(' ');
+        var r = parseInt(r_temp[0]);
+        var c = parseInt(r_temp[1]);
+        var P = [];
+        for(var P_i = 0; P_i < r; P_i++){
+           P[P_i] = readLine();
+        }
+        
+		var fullMatchFound = false;
+        var hasPattern = false;
+	    for (gridRow = 0; gridRow <= R - r; gridRow++) {
+		   var colIndexFirst = G[gridRow].indexOf(P[0]);
+		   var colIndexLast = G[gridRow].lastIndexOf(P[0]);
+		   if (colIndexFirst !== -1) {
+		      for (colIndex = colIndexFirst; colIndex <= colIndexLast; colIndex++) {
 				hasPattern = true;
-				for (r = 1; r < patternRows; r++) {
-					if (grid[R+r].substr(colIndex, patternCols) !== pattern[r]) {
+				for (patternRow = 0; patternRow < r; patternRow++) {
+					if (G[gridRow+patternRow].substr(colIndex, c) !== P[patternRow]) {
 						hasPattern = false;
 						break;
 					}
+                    if (patternRow == r-1) {
+                        var fullMatchFound = true; //reaching end of loop means pattern was found                       
+                    }
 				}
-			}
-		}
-		printResult(T, hasPattern);	
-	}
-	
-}
-
-// Parses user input coming from a textarea form control with id 'userInput'
-// Stores each test case as an object in an array of objects, where each test case
-// is comprised of the grid, the pattern being sought and the respective row and 
-// column numbers.
-function parseUserInput() {
-	var input = document.getElementById('userInput').value.split(/\s+/);
-	var numCases = parseInt(input.shift(), 10);
-	
-	var testCaseArray = [];
-	for (i = 0; i < numCases; i++) {
-		testCaseArray[i] = {};
-		testCaseArray[i].gridRows = parseInt(input.shift(), 10);
-		testCaseArray[i].gridCols = parseInt(input.shift(), 10)
-		testCaseArray[i].grid = [];
-		for (gRow = 0; gRow < testCaseArray[i].gridRows; gRow++) {
-			testCaseArray[i].grid[gRow] = input.shift();
-		}
-		testCaseArray[i].patternRows = parseInt(input.shift(), 10);
-		testCaseArray[i].patternCols = parseInt(input.shift(), 10);
-		testCaseArray[i].pattern = [];
-		for (pRow = 0; pRow < testCaseArray[i].patternRows; pRow++) {
-			testCaseArray[i].pattern[pRow] = input.shift();
-		}
-	}	
-	return testCaseArray;
-}
-
-// Displays result by adding to a list item to the div with id 'results'
-function printResult(testCaseNum, foundPattern) {	
-	var node = document.createElement('LI');
-	if (foundPattern) {
-		var textnode = document.createTextNode("Test Case " + testCaseNum + ": YES");
-	} else {
-		var textnode = document.createTextNode("Test Case " + testCaseNum + ": NO");
-	}
-	node.appendChild(textnode);
-	document.getElementById('results').appendChild(node);
-}
-
-// Intended to support clearing old results on the page before printing new ones
-function clearOldResults() {
-	var resultArea = document.getElementById('results');
-	while (resultArea.hasChildNodes()) {
-		resultArea.removeChild(resultArea.firstChild);
-	}
+                if (fullMatchFound) {
+                    break;
+                }
+			  }
+		   }
+           if (fullMatchFound) {
+               break;
+           }
+	   }
+       if (hasPattern) {
+            process.stdout.write("YES\n");
+       } else {
+            process.stdout.write("NO\n");
+       }
+    }
 }
