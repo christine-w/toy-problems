@@ -8,7 +8,7 @@ function processData(input) {
     var size = parseInt(inputArray.shift(), 10);
     var array = inputArray.map(function(e) { return parseInt(e,10); });
     
-    process.stdout.write(partition(array).toString().replace(/,/g," ") + "\n");
+    process.stdout.write(partition(array).join(" ") + "\n");
 } 
 
 function partition(ar) {
