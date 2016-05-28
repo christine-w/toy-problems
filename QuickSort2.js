@@ -9,7 +9,7 @@ function processData(input) {
     var array = inputArray.map(function(e) { return parseInt(e,10); });
     
     array = quickSort(array);
-    //process.stdout.write(array.toString().replace(/,/g," ") + "\n");
+    //process.stdout.write(array.join(" ") + "\n");
 }  
 
 function quickSort(arr) {
@@ -37,7 +37,7 @@ function quickSort(arr) {
     right = quickSort(right);
     
     var sortedArray = left.concat(equal).concat(right);
-    process.stdout.write(sortedArray.toString().replace(/,/g," ") + "\n");
+    process.stdout.write(sortedArray.join(" ") + "\n");
     return sortedArray;
 }
 
