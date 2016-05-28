@@ -16,14 +16,10 @@ function processData(input) {
 } 
 
 function commonSubstringExists(string1, string2) {
-    if (string1 == string2) {
-        return "YES";
-    }
-    
     var pattern = "[^" + string1 + "]";  
     var re = new RegExp(pattern, "g");
     
-    if (string2.replace(re, " ").trim() === "") {
+    if (string2.replace(re, "") === "") {
         return "NO";
     } else {
         return "YES";
