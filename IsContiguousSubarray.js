@@ -37,19 +37,39 @@ Naive approach:
 
 // Time complexity: O(n*(m-n)) -> O(mn - n^2),
 // n = length of array 1, m = length of array 2
+// const isSub = function(arr1, arr2) {
+//   if (arr1.length === 0) return true;
+//   if (arr1.length > arr2.length) return false;
+//
+//   for (let i = 0; i <= arr2.length - arr1.length; i++) {
+//     // slight improvement by using for-loop and breaking early
+//     // once unmatching element is found -- doesn't improve worst case time
+//     // complexity
+//     if (arr1.every((element, index) => element === arr2[i + index])) {
+//       return true;
+//     }
+//   }
+//   return false;
+// };
+
 const isSub = function(arr1, arr2) {
   if (arr1.length === 0) return true;
   if (arr1.length > arr2.length) return false;
 
   for (let i = 0; i <= arr2.length - arr1.length; i++) {
-    // slight improvement by using for-loop and breaking early
-    // once unmatching element is found -- doesn't improve worst case time
-    // complexity
-    if (arr1.every((element, index) => element === arr2[i + index])) {
-      return true;
+    if (arr2[i] === arr1[0]) {
+      let isMatch = true;
+      for (let j = 1; j < arr1.length; j++) {
+        if (arr1[j] !== arr2[i+j]) {
+          isMatch = false;
+          break;
+        }
+      }
+      if (isMatch) {
+        return true;
+      }
     }
   }
-
   return false;
 };
 
