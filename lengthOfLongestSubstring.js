@@ -30,47 +30,51 @@ Return longest length
 var lengthOfLongestSubstring = function(s) {
   let maxLength = 0;
   let currentLength = 0;
-  const subStringCharacters = new Set();
+  const subStringCharacters = {};
 
-  for (let char of s) {
-    if (subStringCharacters.has(char)) {
-      maxLength = currentLength > maxLength ? currentLength : maxLength;
-      subStringCharacters.clear();
-      subStringCharacters.add(char);
-      currentLength = 1;
+  for (let i = 0; i < s.length; i++) {
+    if (subStringCharacters.hasOwnProperty(s[i])) {
+      maxLength = Math.max(maxLength, currentLength);
+      currentLength = i - subStringCharacters[s[i]];
     } else {
-      subStringCharacters.add(char);
       currentLength++;
     }
+    subStringCharacters[s[i]] = i;
   }
-  return maxLength;
+  return Math.max(maxLength, currentLength);
 };
 
 console.log(lengthOfLongestSubstring('abcabcbb')); // => 3
 console.log(lengthOfLongestSubstring('bbbbb')); // => 1
 console.log(lengthOfLongestSubstring('pwwkew')); // => 3
+console.log(lengthOfLongestSubstring('a')); // => 1
+console.log(lengthOfLongestSubstring('abad')); // => 3
+console.log(lengthOfLongestSubstring('bacad')); // => 3
+console.log(lengthOfLongestSubstring('aba')); // => 2
 console.log(lengthOfLongestSubstring('')); // => 0
 
 var longestSubstring = function(s) {
   let longestSubstring = '';
   let currentSubstring = '';
-  const subStringCharacters = new Set();
+  const subStringCharacters = {};
 
-  for (let char of s) {
-    if (subStringCharacters.has(char)) {
+  for (let i = 0; i < s.length; i++) {
+    if (subStringCharacters.hasOwnProperty(s[i])) {
       longestSubstring = currentSubstring.length > longestSubstring.length ? currentSubstring : longestSubstring;
-      subStringCharacters.clear();
-      subStringCharacters.add(char);
-      currentSubstring = char;
+      currentSubstring = currentSubstring.substring(subStringCharacters[s[i]] + 1) + s[i];
     } else {
-      subStringCharacters.add(char);
-      currentSubstring += char;
+      currentSubstring += s[i];
     }
+    subStringCharacters[s[i]] = i;
   }
-  return longestSubstring;
+  return currentSubstring.length > longestSubstring.length ? currentSubstring : longestSubstring;
 };
 
 console.log(longestSubstring('abcabcbb')); // => 'abc'
 console.log(longestSubstring('bbbbb')); // => 'b'
 console.log(longestSubstring('pwwkew')); // => 'wke'
+console.log(longestSubstring('a')); // => 'a'
+console.log(longestSubstring('abad')); // => 'bad'
+console.log(longestSubstring('bacad')); // => 'bac'
+console.log(longestSubstring('aba')); // => 'ab'
 console.log(longestSubstring('')); // => ''
