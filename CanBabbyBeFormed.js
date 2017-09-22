@@ -43,6 +43,7 @@ const tallyCharCounts = function(str) {
   return obj;
 };
 
+// Approach 1:
 // const canBabbyBeFormed = function(str1, str2) {
 //   if (str1.length > str2.length) return false;
 //
@@ -56,6 +57,7 @@ const tallyCharCounts = function(str) {
 //   return true;
 // };
 
+// Approach 2:
 const canBabbyBeFormed = function(str1, str2) {
   if (str1.length > str2.length) return false;
 
